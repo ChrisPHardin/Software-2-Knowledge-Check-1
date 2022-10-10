@@ -9,7 +9,7 @@ namespace Software2KnowledgeCheck1
     internal class Construction
     {
         public List<Building> Buildings { get; } = new List<Building>();
-        public void CreateApartment(Apartment apartment)
+        public void CreateApartment(Apartment? apartment = null, HighRise? highrise = null)
         {
             // Get materials
             var materialRepo = new MaterialsRepo();
@@ -17,11 +17,22 @@ namespace Software2KnowledgeCheck1
 
             var permitRepo = new ZoningAndPermitRepo();
 
-            var buildingWasMade = ConstructBuilding<Apartment>(materialsNeeded, permitRepo.GetPermit(), permitRepo.ZoningApproves());
-
-            if (buildingWasMade)
+            if (apartment != null)
             {
-                Buildings.Add(apartment);
+                var buildingWasMade = ConstructBuilding<Apartment>(materialsNeeded, permitRepo.GetPermit(), permitRepo.ZoningApproves());
+                if (buildingWasMade)
+                {
+                    Buildings.Add(apartment);
+                }
+            }
+
+            if (highrise != null)
+            {
+                var buildingWasMade = ConstructBuilding<HighRise>(materialsNeeded, permitRepo.GetPermit(), permitRepo.ZoningApproves());
+                if (buildingWasMade)
+                {
+                    Buildings.Add(highrise);
+                }
             }
         }
 
